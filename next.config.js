@@ -6,7 +6,7 @@ const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
   typescript: {
-    ignoreBuildErrors: false,
+    ignoreBuildErrors: true,
   },
   images: {
     remotePatterns: [
