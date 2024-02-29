@@ -13,14 +13,17 @@ const nextConfig = {
       {
         protocol: process.env.NEXT_PUBLIC_PROTOCOL,
         hostname: process.env.NEXT_PUBLIC_API_HOSTNAME,
+        pathname: '/storage/**' 
       },
       {
         protocol: process.env.NEXT_PUBLIC_PROTOCOL,
         hostname: process.env.NEXT_PUBLIC_STORAGE_HOSTNAME,
+        pathname: '/storage/**' 
       },
       {
         protocol: process.env.NEXT_PUBLIC_PROTOCOL,
-        hostname: 'admin.superpao.online'
+        hostname: 'admin.superpao.online',
+        pathname: '/storage/**' 
       }
     ],
     pathname: '/storage/**', 
