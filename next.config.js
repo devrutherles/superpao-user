@@ -3,7 +3,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
 });
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   swcMinify: true,
   typescript: {
     ignoreBuildErrors: false,
@@ -13,8 +13,7 @@ const nextConfig = {
       { protocol: 'https', hostname: 'admin.superpao.online', port: '', pathname: '/storage/**' }
       
     ],
-    pathname: '/storage/**', 
-    domains: ['admin.superpao.online'],
+
     minimumCacheTTL: 3600,
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
