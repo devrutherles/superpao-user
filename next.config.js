@@ -23,6 +23,8 @@ const nextConfig = {
         hostname: 'admin.superpao.online'
       }
     ],
+    pathname: '/storage/**', 
+    domains: ['admin.superpao.online'],
     minimumCacheTTL: 3600,
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
