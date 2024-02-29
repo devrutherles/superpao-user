@@ -15,7 +15,8 @@ const firebaseConfig = {
   projectId: "vital-octagon-215300",
   storageBucket: "vital-octagon-215300.appspot.com",
   messagingSenderId: "657849172002",
-  appId: "1:657849172002:web:0da82fc1e9cd847c14ca7b"
+  appId: "1:657849172002:web:0da82fc1e9cd847c14ca7b",
+  measurementId: "G-QJFS1HY1YR"
 };
 
 firebase.initializeApp(firebaseConfig);
