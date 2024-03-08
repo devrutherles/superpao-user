@@ -93,6 +93,7 @@ export default function CheckoutPayment({
   );
 
   function handleOrderCreate() {
+    const localShopMinPrice = ((currency?.rate || 1) * (shop?.min_amount || 1)) / (defaultCurrency?.rate || 1)
     if (!user?.phone && settings?.before_order_phone_required === "1") {
       onPhoneVerify();
       return;
@@ -103,11 +104,9 @@ export default function CheckoutPayment({
         return;
       }
     }
-    if (shop && shop?.min_amount && shop?.min_amount >= Number(order.price)) {
+    if (shop && shop?.min_amount && defaultCurrency && currency && localShopMinPrice >= Number(order.price)) {
       warning(
-        `${t("your.order.did.not.reach.min.amount.min.amount.is")} ${
-          defaultCurrency?.symbol
-        }${shop.min_amount}`
+        <span>{t("your.order.did.not.reach.min.amount.min.amount.is")} <Price number={localShopMinPrice} /></span>
       );
       return;
     }

@@ -87,7 +87,7 @@ export default function RegisterForm({ onSuccess, changeView }: Props) {
       <div className={cls.space} />
       <TextInput
         name="email"
-        label={t("email.or.phone")}
+        label={t("phone")}
         placeholder={t("type.here")}
         value={formik.values.email}
         onChange={formik.handleChange}

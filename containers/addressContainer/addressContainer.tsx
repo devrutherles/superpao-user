@@ -56,6 +56,22 @@ export default function AddressContainer({}: Props) {
         perPage: 100,
       }),
     {
+      onSuccess: (res) => {
+        if (res.length !== 0) {
+          const defaultAddress = res.find(item => Boolean(item.active));
+          let latlng: string;
+          if (defaultAddress?.location) {
+            latlng = `${defaultAddress?.location.at(0)},${defaultAddress.location.at(1)}`;
+          } else {
+            latlng = location;
+          }
+          setUserAddress(
+            defaultAddress?.address?.address || ""
+          );
+          updateAddress(defaultAddress?.address?.address)
+          updateLocation(latlng)
+        }
+      },
       enabled: Boolean(user),
     }
   );
@@ -153,6 +169,7 @@ export default function AddressContainer({}: Props) {
       )}
       {isDesktop ? (
         <PopoverContainer
+          sx={{top: 10}}
           open={savedAddressList}
           anchorEl={savedListAnchorEl}
           onClose={handleCloseSavedAddressList}

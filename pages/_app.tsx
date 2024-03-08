@@ -117,7 +117,6 @@ export default function ExtendedApp({
                     )}
                   </AuthProvider>
                 </SettingsProvider>
-              </Provider>
               <ToastContainer
                 position="top-right"
                 autoClose={5000}
@@ -130,6 +129,7 @@ export default function ExtendedApp({
                 closeButton={false}
                 className="toast-alert"
               />
+              </Provider>
               <Script
                 src={`https://www.googletagmanager.com/gtag/js?id=${G_TAG}`}
                 strategy="afterInteractive"

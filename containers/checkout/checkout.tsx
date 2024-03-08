@@ -18,6 +18,7 @@ import { useTranslation } from "react-i18next";
 import useShopWorkingSchedule from "hooks/useShopWorkingSchedule";
 import getFirstValidDate from "utils/getFirstValidDate";
 import { selectOrder } from "redux/slices/order";
+import { EXTERNAL_PAYMENTS } from "constants/constants";
 
 type Props = {
   data: IShop;
@@ -119,8 +120,11 @@ export default function CheckoutContainer({
         phone: values.for_someone ? trimmedPhone : undefined,
         username: values.for_someone ? values.username : undefined,
         delivery_time: values.delivery_time?.split(" - ")?.at(0),
-        coupon: values?.coupon && values.coupon.length > 0 ? values?.coupon : undefined,
-        note: values?.note && values.note.length > 0 ? values?.note : undefined
+        coupon:
+          values?.coupon && values.coupon.length > 0
+            ? values?.coupon
+            : undefined,
+        note: values?.note && values.note.length > 0 ? values?.note : undefined,
       };
       mutate(payload);
     },
@@ -139,14 +143,11 @@ export default function CheckoutContainer({
           payment_sys_id: formik.values.payment_type?.id,
         },
       };
-      if (formik.values.payment_type?.tag === "stripe") {
-        stripePay({ order_id: payload.id });
-      }
-      if (formik.values.payment_type?.tag === "razorpay") {
-        razorPay({ order_id: payload.id });
-      }
-      if (formik.values.payment_type?.tag === "paystack") {
-        paystackPay({ order_id: payload.id });
+      if (EXTERNAL_PAYMENTS.includes(formik.values.payment_type?.tag || "")) {
+        externalPay({
+          name: formik.values.payment_type?.tag,
+          data: { order_id: payload.id },
+        });
       }
       transactionCreate(payload);
     },
@@ -169,28 +170,9 @@ export default function CheckoutContainer({
       },
     });
 
-  const { isLoading: isLoadingPay, mutate: stripePay } = useMutation({
-    mutationFn: (data: any) => paymentService.stripePay(data),
-    onSuccess: (data) => {
-      window.location.replace(data.data.data.url);
-    },
-    onError: (err: any) => {
-      error(err?.data?.message);
-    },
-  });
-
-  const { isLoading: isLoadingRazorPay, mutate: razorPay } = useMutation({
-    mutationFn: (data: any) => paymentService.razorPay(data),
-    onSuccess: (data) => {
-      window.location.replace(data.data.data.url);
-    },
-    onError: (err: any) => {
-      error(err?.data?.message);
-    },
-  });
-
-  const { isLoading: isLoadingPaystack, mutate: paystackPay } = useMutation({
-    mutationFn: (data: any) => paymentService.paystackPay(data),
+  const { isLoading: externalPayLoading, mutate: externalPay } = useMutation({
+    mutationFn: (payload: any) =>
+      paymentService.payExternal(payload.name, payload.data),
     onSuccess: (data) => {
       window.location.replace(data.data.data.url);
     },
@@ -229,13 +211,7 @@ export default function CheckoutContainer({
             <CheckoutPayment
               formik={formik}
               shop={data}
-              loading={
-                isLoading ||
-                isLoadingTransaction ||
-                isLoadingPay ||
-                isLoadingRazorPay ||
-                isLoadingPaystack
-              }
+              loading={isLoading || isLoadingTransaction || externalPayLoading}
               payments={paymentTypes}
               onPhoneVerify={onPhoneVerify}
             />

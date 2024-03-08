@@ -16,6 +16,7 @@ import { ParcelFormValues, ParcelType } from "interfaces/parcel.interface";
 import { useAppSelector } from "hooks/useRedux";
 import { selectCurrency } from "redux/slices/currency";
 import paymentService from "services/payment";
+import { EXTERNAL_PAYMENTS } from "constants/constants";
 
 type Props = {
   children: any;
@@ -36,7 +37,7 @@ export default function ParcelCheckoutContainer({ children }: Props) {
   };
 
   const { data: payments } = useQuery("payments", () =>
-    paymentService.getAll()
+    paymentService.getAll(),
   );
 
   const formik = useFormik({
@@ -156,17 +157,13 @@ export default function ParcelCheckoutContainer({ children }: Props) {
         id: data.data.id,
         payment: { payment_sys_id: paymentId },
       };
-      const paymentType = payments?.data.find(
-        (item) => item.id == paymentId
-      )?.tag;
-      if (paymentType === "stripe") {
-        stripePay({ order_id: payload.id });
-      }
-      if (paymentType === "razorpay") {
-        razorPay({ order_id: payload.id });
-      }
-      if (paymentType === "paystack") {
-        paystackPay({ order_id: payload.id });
+      const paymentType = payments?.data.find((item) => item.id == paymentId)
+        ?.tag;
+      if (EXTERNAL_PAYMENTS.includes(paymentType || "")) {
+        externalPay({
+          name: paymentType,
+          data: { parcel_id: payload.id },
+        });
       }
       transactionCreate(payload);
     },
@@ -187,28 +184,9 @@ export default function ParcelCheckoutContainer({ children }: Props) {
       },
     });
 
-  const { isLoading: isLoadingPay, mutate: stripePay } = useMutation({
-    mutationFn: (data: any) => paymentService.stripePay(data),
-    onSuccess: (data) => {
-      window.location.replace(data.data.data.url);
-    },
-    onError: (err: any) => {
-      error(err?.data?.message);
-    },
-  });
-
-  const { isLoading: isLoadingRazorPay, mutate: razorPay } = useMutation({
-    mutationFn: (data: any) => paymentService.razorPay(data),
-    onSuccess: (data) => {
-      window.location.replace(data.data.data.url);
-    },
-    onError: (err: any) => {
-      error(err?.data?.message);
-    },
-  });
-
-  const { isLoading: isLoadingPaystack, mutate: paystackPay } = useMutation({
-    mutationFn: (data: any) => paymentService.paystackPay(data),
+  const { isLoading: externalPayLoading, mutate: externalPay } = useMutation({
+    mutationFn: (payload: any) =>
+      paymentService.payExternal(payload.name, payload.data),
     onSuccess: (data) => {
       window.location.replace(data.data.data.url);
     },
@@ -234,11 +212,7 @@ export default function ParcelCheckoutContainer({ children }: Props) {
                 return React.cloneElement(child, {
                   formik,
                   loading:
-                    isLoading ||
-                    isLoadingTransaction ||
-                    isLoadingPay ||
-                    isLoadingRazorPay ||
-                    isLoadingPaystack,
+                    isLoading || isLoadingTransaction || externalPayLoading,
                   selectedType,
                   handleSelectType,
                 });

@@ -126,6 +126,9 @@ export default function NotificationCenter({ onClose }: Props) {
       case NotificationStatus.NEWS_PUBLISH:
         push(`/?news=${item.blog?.uuid}`);
         break;
+      case NotificationStatus.DELIVERY_REFUNDED:
+        push(`/wallet`);
+        break;
       default:
         break;
     }

@@ -11,8 +11,8 @@ import useModal from "hooks/useModal";
 import { useMediaQuery } from "@mui/material";
 import { selectCurrency } from "redux/slices/currency";
 import { useAppSelector } from "hooks/useRedux";
+import FooterMenu from "containers/footerMenu/footerMenu";
 
-const FooterMenu = dynamic(() => import("containers/footerMenu/footerMenu"));
 const ModalContainer = dynamic(() => import("containers/modal/modal"));
 const MobileDrawer = dynamic(() => import("containers/drawer/mobileDrawer"));
 const WalletTopup = dynamic(() => import("components/walletTopup/walletTopup"));

@@ -4,7 +4,7 @@ import cls from "./alert.module.scss";
 
 type Props = {
   icon: React.ReactElement;
-  message: string;
+  message: React.ReactNode;
   closeToast?: () => void;
   type: "success" | "warning" | "error" | "info";
 };

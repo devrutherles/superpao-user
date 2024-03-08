@@ -8,12 +8,12 @@
   --primary-bg: #f4f5f8;
   --secondary-bg: #fff;
   --grey: #f0f0f0;
-  --primary: #FB8456;
+  --primary: #83ea00;
   --orange: #ffa100;
   --yellow: #ffc636;
   --border: #e9e9e9;
   --red: #ff3d00;
-  --primary-hover: #FB8451;
+  --primary-hover: #79d703;
   --blue: #03758e;
   --light-blue: #0d5fff;
   --white: #fff;
@@ -246,7 +246,7 @@ input[data-autocompleted] {
 
 @supports (font: -apple-system-body) and (-webkit-appearance: none) {
   img[loading="lazy"] {
-    clip-path: inset(0.6px);
+    clipPath: inset(0.6px);
   }
 }
 

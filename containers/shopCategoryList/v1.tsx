@@ -34,12 +34,13 @@ export default function ShopCategoryList({ data, loading, parent }: Props) {
             992: { slidesPerView: 8.5 },
             1200: { slidesPerView: 10 },
           }}
-      
+          className={`${cls.slider} full-width`}
           modules={[Navigation]}
+          navigation
           spaceBetween={10}
         >
           {!!parent && (
-            <SwiperSlide >
+            <SwiperSlide style={{ maxWidth: "max-content" }}>
               <Link href={`/shop-category/${parent}`} shallow>
                 <div className={cls.card}>
                   <span className={cls.text}>{t("all")}</span>
@@ -54,7 +55,7 @@ export default function ShopCategoryList({ data, loading, parent }: Props) {
                 </SwiperSlide>
               ))
             : data?.map((category) => (
-                <SwiperSlide style={{width:'fit-content',flexShrink:1}} key={category.id}>
+                <SwiperSlide key={category.id}>
                   <CategoryCard data={category} parent={parent} />
                 </SwiperSlide>
               ))}

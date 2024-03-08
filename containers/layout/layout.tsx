@@ -10,7 +10,11 @@ import { useAppDispatch, useAppSelector } from "hooks/useRedux";
 import { updateUserCart } from "redux/slices/userCart";
 import { clearCart, selectCart } from "redux/slices/cart";
 import { useAuth } from "contexts/auth/auth.context";
-import { selectCurrency, setCurrency, setDefaultCurrency } from "redux/slices/currency";
+import {
+  selectCurrency,
+  setCurrency,
+  setDefaultCurrency,
+} from "redux/slices/currency";
 import currencyService from "services/currency";
 import { Currency, Langauge } from "interfaces";
 import languageService from "services/language";
@@ -25,7 +29,7 @@ import useLocale from "hooks/useLocale";
 import createSettings from "utils/createSettings";
 
 const PushNotification = dynamic(
-  () => import("containers/pushNotification/pushNotification")
+  () => import("containers/pushNotification/pushNotification"),
 );
 
 type LayoutProps = {
@@ -62,14 +66,14 @@ export default function Layout({ children, locale }: LayoutProps) {
       onSuccess: (data) => {
         addResourceBundle(locale, "translation", data.data);
       },
-    }
+    },
   );
 
   useQuery("currencies", () => currencyService.getAll(), {
     onSuccess: (data) => {
       const activeCurrency = data.data.find((item: Currency) => item.default);
       const savedCurrency = data.data.find(
-        (item: Currency) => item.id === currency?.id
+        (item: Currency) => item.id === currency?.id,
       );
       dispatch(setDefaultCurrency(activeCurrency));
       if (savedCurrency) {
@@ -114,7 +118,7 @@ export default function Layout({ children, locale }: LayoutProps) {
         reservation_before_time: obj.reservation_before_time,
         min_reservation_time: obj.min_reservation_time,
         active_parcel: obj.active_parcel,
-        before_order_phone_required: obj.before_order_phone_required
+        before_order_phone_required: obj.before_order_phone_required,
       });
     },
   });

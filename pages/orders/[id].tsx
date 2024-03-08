@@ -32,6 +32,7 @@ export default function OrderSingle({}: Props) {
     () => orderService.getById(orderId),
     {
       refetchOnWindowFocus: true,
+      refetchInterval: 5000,
       staleTime: 0,
       onSuccess: (data) => {
         if (!data.data.review && data.data.status === "delivered") {

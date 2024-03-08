@@ -112,6 +112,8 @@ const renderActiveStep = (status: string) => {
       return 0;
     case "ready":
       return 1;
+    case "cooking":
+      return 1;
     case "on_a_way":
       return 2;
     case "delivered":

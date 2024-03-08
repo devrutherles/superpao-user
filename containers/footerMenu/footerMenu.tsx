@@ -55,9 +55,6 @@ export default function FooterMenu({}: Props) {
                   </Link>
                 </li>
               )}
-
-              {
-              /* 
               <li className={cls.item}>
                 <Link
                   href={"/liked"}
@@ -69,8 +66,6 @@ export default function FooterMenu({}: Props) {
                   <span className={cls.text}>{t("liked")}</span>
                 </Link>
               </li>
-              */
-            }
               <li className={cls.item}>
                 <Link
                   href={"/"}

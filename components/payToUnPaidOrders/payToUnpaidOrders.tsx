@@ -7,7 +7,11 @@ import dynamic from "next/dynamic";
 import { useSettings } from "contexts/settings/settings.context";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import paymentService from "services/payment";
-import { BASE_URL, UNPAID_STATUSES } from "constants/constants";
+import {
+  BASE_URL,
+  EXTERNAL_PAYMENTS,
+  UNPAID_STATUSES,
+} from "constants/constants";
 import { Order, Payment } from "interfaces";
 import PaymentMethod from "components/paymentMethod/paymentMethod";
 import { useTranslation } from "react-i18next";
@@ -79,8 +83,9 @@ export default function PayToUnpaidOrders({ data }: Props) {
       },
     });
 
-  const { isLoading: isLoadingPay, mutate: stripePay } = useMutation({
-    mutationFn: (data: any) => paymentService.stripePay(data),
+  const { isLoading: externalPayLoading, mutate: externalPay } = useMutation({
+    mutationFn: (payload: any) =>
+      paymentService.payExternal(payload.name, payload.data),
     onSuccess: (data) => {
       window.location.replace(data.data.data.url);
     },
@@ -88,27 +93,6 @@ export default function PayToUnpaidOrders({ data }: Props) {
       error(err?.data?.message);
     },
   });
-
-  const { isLoading: isLoadingRazorPay, mutate: razorPay } = useMutation({
-    mutationFn: (data: any) => paymentService.razorPay(data),
-    onSuccess: (data) => {
-      window.location.replace(data.data.data.url);
-    },
-    onError: (err: any) => {
-      error(err?.data?.message);
-    },
-  });
-
-  const { isLoading: isLoadingPaystack, mutate: paystackPay } = useMutation({
-    mutationFn: (data: any) => paymentService.paystackPay(data),
-    onSuccess: (data) => {
-      window.location.replace(data.data.data.url);
-    },
-    onError: (err: any) => {
-      error(err?.data?.message);
-    },
-  });
-
 
   const payAgain = (tag: string) => {
     const payment = paymentTypes.find((paymentType) => paymentType.tag === tag);
@@ -118,14 +102,8 @@ export default function PayToUnpaidOrders({ data }: Props) {
         payment_sys_id: payment?.id,
       },
     };
-    if (tag === "stripe") {
-      stripePay({ order_id: payload.id });
-    }
-    if (tag === "razorpay") {
-      razorPay({ order_id: payload.id });
-    }
-    if (tag === "paystack") {
-      paystackPay({ order_id: payload.id });
+    if (EXTERNAL_PAYMENTS.includes(tag)) {
+      externalPay({name: tag, data: { order_id: payload.id }});
     }
     if (tag === "alipay") {
       window.location.replace(
@@ -152,12 +130,7 @@ export default function PayToUnpaidOrders({ data }: Props) {
             value={data?.transaction?.payment_system.tag}
             list={paymentTypes}
             handleClose={handleClosePaymentMethod}
-            isButtonLoading={
-              isLoadingTransaction ||
-              isLoadingPay ||
-              isLoadingPaystack ||
-              isLoadingRazorPay 
-            }
+            isButtonLoading={isLoadingTransaction || externalPayLoading}
             onSubmit={(tag) => {
               if (tag) {
                 payAgain(tag);

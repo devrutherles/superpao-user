@@ -30,7 +30,7 @@ interface formValues {
 
 export default function Booking({ data, handleClose }: Props) {
   const queryClient = useQueryClient();
-  const { t, locale } = useLocale();
+  const { t } = useLocale();
   const { isAuthenticated, user } = useAuth();
   const { query } = useRouter();
   const { settings } = useSettings();
@@ -38,11 +38,10 @@ export default function Booking({ data, handleClose }: Props) {
   const table_id = String(query.table_id || "") || undefined;
   const minReservationHour = settings?.min_reservation_time || 3;
   const shopId = Number(query.id);
-  const zone_id = String(query.zone_id || "") || undefined;
 
   const { data: bookings, isLoading: isBoookingFetching } = useQuery(
     ["bookings"],
-    () => bookingService.getAll()
+    () => bookingService.getAll(),
   );
 
   const { isLoading, mutate } = useMutation({
@@ -52,44 +51,13 @@ export default function Booking({ data, handleClose }: Props) {
       success(t("your.place.reserved"));
     },
     onError: (err: any) => {
-      if(!!err?.data?.params?.booking_id) {
+      if (!!err?.data?.params?.booking_id) {
         error(t("no.available.booking"));
         return;
       }
       error(err?.data?.message);
     },
   });
-
-  const { data: zones, isLoading: isZoneLoading } = useQuery(
-    ["zones", locale, shopId],
-    () => bookingService.getZones({ page: 1, perPage: 100, shop_id: shopId }),
-    {
-      select: (data) =>
-        data.data.map((item) => ({
-          label: item.translation?.title || "",
-          value: String(item.id),
-          data: item,
-        })),
-    }
-  );
-
-  const { data: tables } = useQuery(
-    ["tables", locale, zone_id],
-    () =>
-      bookingService.getTables({
-        page: 1,
-        perPage: 100,
-        shop_section_id: zone_id,
-      }),
-    {
-      staleTime: 0,
-      select: (data) =>
-        data.data.map((item) => ({
-          label: item.name,
-          value: String(item.id),
-        })),
-    }
-  );
 
   const formik = useFormik({
     initialValues: {
@@ -132,7 +100,7 @@ export default function Booking({ data, handleClose }: Props) {
     const isToday = exactDate.isSame(dayjs());
     const weekDay = WEEK[today];
     const workingSchedule = data?.booking_shop_working_days?.find(
-      (item) => item.day === weekDay
+      (item) => item.day === weekDay,
     );
     if (workingSchedule) {
       const from = exactDate.add(minReservationHour, "hour").format("HH:mm");
@@ -151,20 +119,6 @@ export default function Booking({ data, handleClose }: Props) {
             {!!booking_date &&
               dayjs(booking_date).format("MMM DD, dddd - HH:mm")}
           </p>
-          <span>
-            {t("zone")}:{" "}
-            <span className={cls.text}>
-              {
-                zones?.find((zone) => zone.value === zone_id)?.data.translation
-                  ?.title
-              }
-            </span>
-            , {t("table")}:{" "}
-            <span className={cls.text}>
-              {tables?.find((table) => table.value === table_id)?.label}
-            </span>
-            , {t("guests")}: <span className={cls.text}>{query?.guests}</span>
-          </span>
         </div>
         <div className={cls.actions}>
           <div className={cls.phoneNumber}>

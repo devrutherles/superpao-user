@@ -78,6 +78,7 @@ export enum NotificationStatus {
   BOOKING_STATUS = "booking_status",
   NEW_BOOKING = "new_booking",
   NEWS_PUBLISH = "news_publish",
+  DELIVERY_REFUNDED = "order_refunded"
 }
 
 export interface IUserPushNotification {

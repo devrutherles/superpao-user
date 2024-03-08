@@ -10,7 +10,7 @@ export const success = (msg: string, options?: ToastOptions) => {
     options
   );
 };
-export const warning = (msg: string, options?: ToastOptions) => {
+export const warning = (msg: React.ReactNode, options?: ToastOptions) => {
   toast(
     <Alert icon={<ErrorWarningLineIcon />} message={msg} type="warning" />,
     options

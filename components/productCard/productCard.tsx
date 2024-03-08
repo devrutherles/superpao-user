@@ -7,6 +7,7 @@ import Price from "components/price/price";
 import Badge from "components/badge/badge";
 import FallbackImage from "components/fallbackImage/fallbackImage";
 import { useRouter } from "next/router";
+import PercentFillIcon from "remixicon-react/PercentFillIcon";
 
 type Props = {
   data: Product;
@@ -43,7 +44,13 @@ export default function ProductCard({ data, handleOpen }: Props) {
       className={`${cls.wrapper} ${data.id === 0 ? cls.active : ""}`}
     >
       <div className={cls.header}>
-        <FallbackImage
+        {!!data.stock?.discount && 
+        <div className={cls.discount}>
+           <Badge variant="circle" type="discount" />
+        </div>
+        }
+
+         <FallbackImage
           fill
           src={getImage(data.img)}
           alt={data.translation?.title}

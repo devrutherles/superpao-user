@@ -14,7 +14,7 @@ type Props = {
 
 export default function BannerList({ data, loading }: Props) {
   const router = useRouter();
-  if(data?.length ===0 && !loading) return null;
+  if (data?.length === 0 && !loading) return null;
   return (
     <div className={cls.banners}>
       <Swiper
@@ -66,7 +66,7 @@ export default function BannerList({ data, loading }: Props) {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <g clip-path="url(#clip0_203_2393)">
+            <g clipPath="url(#clip0_203_2393)">
               <path
                 d="M10.8283 12L15.7783 16.95L14.3643 18.364L8.00032 12L14.3643 5.63601L15.7783 7.05001L10.8283 12Z"
                 fill="white"
@@ -92,7 +92,7 @@ export default function BannerList({ data, loading }: Props) {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <g clip-path="url(#clip0_203_2388)">
+            <g clipPath="url(#clip0_203_2388)">
               <path
                 d="M13.1717 12L8.22168 7.04999L9.63568 5.63599L15.9997 12L9.63568 18.364L8.22168 16.95L13.1717 12Z"
                 fill="white"

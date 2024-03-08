@@ -9,9 +9,13 @@ import TimeFillIcon from "remixicon-react/TimeFillIcon";
 import AddLineIcon from "remixicon-react/AddLineIcon";
 import SubtractLineIcon from "remixicon-react/SubtractLineIcon";
 import StarFillIcon from "remixicon-react/StarFillIcon";
+import BranchIcon from "remixicon-react/Store3FillIcon";
 import { useTranslation } from "react-i18next";
 import useShopWorkingSchedule from "hooks/useShopWorkingSchedule";
 import { success, error } from "components/alert/toast";
+import { useQuery } from "react-query";
+import shopService from "services/shop";
+import RoadMapIcon from "remixicon-react/RoadMapLineIcon";
 
 type Props = {
   data?: IShop;
@@ -20,12 +24,18 @@ type Props = {
 
 export default function ShopInfoDetails({ data, onClose }: Props) {
   const { t } = useTranslation();
-  const location = {
+  const [location, setLocation] = useState({
     lat: Number(data?.location?.latitude),
     lng: Number(data?.location?.longitude),
-  };
+  });
   const { workingSchedule, isShopClosed } = useShopWorkingSchedule(data);
   const [openTime, setOpenTime] = useState(false);
+  const [openBranch, setOpenBranch] = useState(false);
+  const { data: branches } = useQuery(
+    ["branches", data?.id],
+    () => shopService.getAllBranches({ shop_id: data?.id }),
+    { enabled: !!data?.id }
+  );
 
   const copyToClipBoard = async () => {
     try {
@@ -53,10 +63,25 @@ export default function ShopInfoDetails({ data, onClose }: Props) {
         </div>
         <div className={cls.body}>
           <div className={cls.flexBtn}>
-            <button className={cls.flex} onClick={copyToClipBoard}>
+            <button
+              className={cls.flex}
+              onClick={() =>
+                setLocation({
+                  lat: Number(data?.location?.latitude),
+                  lng: Number(data?.location?.longitude),
+                })
+              }
+            >
               <MapPin2FillIcon />
               <span className={cls.text}>{data?.translation?.address}</span>
-              <FileCopyLineIcon />
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  copyToClipBoard();
+                }}
+              >
+                <FileCopyLineIcon />
+              </button>
             </button>
           </div>
           <div className={cls.flexBtn}>
@@ -91,6 +116,42 @@ export default function ShopInfoDetails({ data, onClose }: Props) {
               </span>
             </div>
           </div>
+          {branches && branches?.data?.length !== 0 && (
+            <div className={cls.flexBtn}>
+              <button
+                onClick={() => setOpenBranch(!openBranch)}
+                className={cls.flex}
+              >
+                <BranchIcon />
+                <span className={cls.text}>{t("branches")}</span>
+                {openBranch ? <SubtractLineIcon /> : <AddLineIcon />}
+              </button>
+              {openBranch && (
+                <ul className={cls.details}>
+                  {branches?.data?.map((branch) => (
+                    <li key={"branch" + branch.id} className={cls.branch}>
+                      <div className={cls.content}>
+                        <div className={cls.title}>
+                          {branch.translation?.title}:{" "}
+                        </div>
+                        <span>{branch?.address?.address}</span>
+                      </div>
+                      <button
+                        onClick={() =>
+                          setLocation({
+                            lat: Number(branch.location.latitude),
+                            lng: Number(branch.location.longitude),
+                          })
+                        }
+                      >
+                        <RoadMapIcon />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

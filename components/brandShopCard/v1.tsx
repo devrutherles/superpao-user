@@ -4,12 +4,15 @@ import cls from "./v1.module.scss";
 import Image from "next/image";
 import Link from "next/link";
 import VerifiedComponent from "components/verifiedComponent/verifiedComponent";
+import useLocale from "hooks/useLocale";
+import getShortTimeType from "utils/getShortTimeType";
 
 type Props = {
   data: IShop;
 };
 
 export default function BrandShopCard({ data }: Props) {
+  const { t } = useLocale();
   return (
     <Link href={`/shop/${data.id}`}>
       <div className={cls.card}>
@@ -27,7 +30,7 @@ export default function BrandShopCard({ data }: Props) {
           </strong>
           <span className={cls.deliveryTime}>
             {data.delivery_time?.from} - {data.delivery_time?.to}{" "}
-            {data.delivery_time?.type}
+            {t(getShortTimeType(data.delivery_time?.type))}
           </span>
         </div>
       </div>

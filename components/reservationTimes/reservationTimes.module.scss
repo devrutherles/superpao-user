@@ -12,6 +12,11 @@
       align-items: center;
       column-gap: 8px;
       text-decoration: underline;
+      .text {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--dark-blue);
+      }
       &:hover {
         text-decoration: none;
       }

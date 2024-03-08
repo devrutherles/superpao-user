@@ -26,7 +26,7 @@ export default function CheckoutProducts({
   const cart = useAppSelector(selectUserCart);
 
   const goToCart = () => {
-    push(`/restaurant/${data.id}`);
+    push(`/shop/${data.id}`);
   };
 
   return (
