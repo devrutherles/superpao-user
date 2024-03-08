@@ -10,8 +10,9 @@ type Props = {
   quality?: number;
   priority?: boolean;
   onError?: () => void;
+  
 };
 
 export default function FallbackImage({ src, alt, onError }: Props) {
-  return <img src={src} alt={alt} className={cls.root} onError={onError} />;
+  return <img  src={src} alt={alt} className={cls.root} onError={onError} />;
 }

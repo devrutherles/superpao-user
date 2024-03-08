@@ -9,6 +9,7 @@ import FallbackImage from "components/fallbackImage/fallbackImage";
 import getShortTimeType from "utils/getShortTimeType";
 import useLocale from "hooks/useLocale";
 import VerifiedComponent from "components/verifiedComponent/verifiedComponent";
+import ShopLogo from "components/shopLogo/shopLogo";
 
 type Props = {
   data: IShop;
@@ -20,12 +21,17 @@ export default function StoreCard({ data }: Props) {
   return (
     <Link href={`/shop/${data.id}`} className={cls.wrapper}>
       <div className={cls.header}>
+
         <FallbackImage
           fill
           src={getImage(data.background_img)}
           alt={data.translation?.title}
           sizes="286px"
         />
+          
+
+   
+   
         <div className={cls.badge}>
           <TaxiFillIcon />
           <span className={cls.text}>

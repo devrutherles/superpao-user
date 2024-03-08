@@ -29,11 +29,9 @@ export default function CategoryCard({ data, parent }: Props) {
         }`}
       >
         <Image
-          width={60}
-          height={60}
-        
-          style={{backgroundColor:'#eeeeee'}}
-
+          width={50}
+          height={50}
+          
           className={cls.img}
           alt={data.translation.title}
           
