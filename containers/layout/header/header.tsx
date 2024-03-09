@@ -71,12 +71,8 @@ export default function Header() {
               <button className={cls.iconBtn} onClick={toggleDarkMode}>
                 {isDarkMode ? <MoonFillIcon /> : <SunFillIcon />}
               </button>
-              <button className={cls.iconBtn} onClick={handleOpenLang}>
-                <GlobalLineIcon />
-              </button>
-              <button className={cls.iconBtn} onClick={handleOpenCurrency}>
-                <BankCardLineIcon />
-              </button>
+          
+            
               <NotificationStats />
             </div>
             {isAuthenticated ? (
