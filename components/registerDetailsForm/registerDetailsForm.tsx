@@ -158,17 +158,7 @@ export default function RegisterDetailsForm({ email }: Props) {
           label={t("female")}
         />
       </RadioGroup>
-      <div className={cls.space} />
-      <TextInput
-        name="referral"
-        label={t("referral")}
-        placeholder={t("type.here")}
-        value={formik.values.referral}
-        onChange={formik.handleChange}
-        error={!!formik.errors.referral}
-        helperText={formik.errors.referral}
-        autoComplete="off"
-      />
+  
       <div className={cls.space} />
       <PasswordInput
         name="password"

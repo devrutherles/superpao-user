@@ -41,10 +41,10 @@ export default function RegisterForm({ onSuccess, changeView }: Props) {
             setSubmitting(false);
           });
       } else {
-        phoneNumberSignIn(values.email)
+        phoneNumberSignIn("+55" + values.email)
           .then((confirmationResult) => {
             onSuccess({
-              email: values.email,
+              email: "+55"+  values.email,
               callback: confirmationResult,
             });
             changeView("VERIFY");

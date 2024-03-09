@@ -46,7 +46,7 @@ export default function LoginForm({}: Props) {
       } else {
         const trimmedPhone = values.login?.replace(/[^0-9]/g, "");
         body = {
-          phone: Number(trimmedPhone),
+          phone: '55' + trimmedPhone,
           password: values.password,
         };
       }
@@ -135,19 +135,7 @@ export default function LoginForm({}: Props) {
           {t("login")}
         </PrimaryButton>
       </div>
-      <div className={cls.userInfo}>
-        <Stack>
-          <span className={cls.login}>{defaultUser.login}</span>
-          <span className={cls.password}>{defaultUser.password}</span>
-        </Stack>
-        <button
-          onClick={() => handleCopy(defaultUser.login, defaultUser.password)}
-          type={"button"}
-          className={cls.copy}
-        >
-          {t("copy")}
-        </button>
-      </div>
+
     </form>
   );
 }

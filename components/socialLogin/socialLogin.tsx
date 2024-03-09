@@ -112,19 +112,8 @@ export default function SocialLogin({}: Props) {
         <div className={cls.line} />
       </div>
       <div className={cls.flex}>
-        <button type="button" className={cls.item} onClick={handleAppleSignIn}>
-          <AppleFillIcon />
-          <span className={cls.text}>Apple</span>
-        </button>
-        <button
-          type="button"
-          className={cls.item}
-          onClick={handleFacebookSignIn}
-        >
-          <FacebookCircleFillIcon />
-          <span className={cls.text}>Facebook</span>
-        </button>
-        <button type="button" className={cls.item} onClick={handleGoogleSignIn}>
+
+        <button style={{margin:'auto'}} type="button" className={cls.item} onClick={handleGoogleSignIn}>
           <GoogleFillIcon />
           <span className={cls.text}>Google</span>
         </button>

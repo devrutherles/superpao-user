@@ -55,17 +55,7 @@ export default function FooterMenu({}: Props) {
                   </Link>
                 </li>
               )}
-              <li className={cls.item}>
-                <Link
-                  href={"/liked"}
-                  className={`${cls.link} ${
-                    pathname.includes("liked") ? cls.active : ""
-                  }`}
-                >
-                  <HeartLineIcon />
-                  <span className={cls.text}>{t("liked")}</span>
-                </Link>
-              </li>
+       
               <li className={cls.item}>
                 <Link
                   href={"/"}

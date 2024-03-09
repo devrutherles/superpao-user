@@ -11,6 +11,9 @@ import storyService from "services/story";
 import bannerService from "services/banner";
 import useUserLocation from "hooks/useUserLocation";
 import qs from "qs";
+import { selectCurrency } from "redux/slices/currency";
+import CategoryContainer from "containers/category/v3";
+import ShopListSlider from "containers/shopList/shopListSliderV2";
 
 const Empty = dynamic(() => import("components/empty/empty"));
 const Loader = dynamic(() => import("components/loader/loader"));
@@ -27,7 +30,7 @@ const NewsContainer = dynamic(
 );
 const ShopList = dynamic(() => import("containers/shopList/shopList"));
 const ShopCategoryList = dynamic(
-  () => import("containers/shopCategoryList/v1")
+  () => import("containers/shopCategoryList/v4")
 );
 const AdList = dynamic(() => import("containers/adList/v1"));
 const BrandShopList = dynamic(() => import("containers/brandShopList/v1"));
@@ -65,6 +68,12 @@ export default function Homev1() {
         address: location,
       })
   );
+
+  const { data: shopCategories, isLoading: isCategoriesLoading } = useQuery(
+    ["shopCategories", locale],
+    () => categoryService.getAllShopCategories({ perPage: 100 })
+  );
+
 
   const { data: shops, isLoading: isShopLoading } = useQuery(
     ["shops", location, locale],
@@ -138,6 +147,20 @@ export default function Homev1() {
     },
     [fetchNextPage, hasNextPage]
   );
+  const currency = useAppSelector(selectCurrency);
+
+  const { data: popularShops } = useQuery(
+    ["popularShops", location, locale, currency],
+    () =>
+      shopService.getAll(
+        qs.stringify({
+          perPage: PER_PAGE,
+          address: location,
+          open: 1,
+          currency_id: currency?.id,
+        })
+      )
+  );
 
   useEffect(() => {
     const option = {
@@ -155,16 +178,19 @@ export default function Homev1() {
 
   return (
     <>
-      <ShopCategoryList
-        data={shopCategoryList?.data?.sort((a, b) => a?.input - b?.input) || []}
-        loading={shopCategoryLoading}
+      <CategoryContainer
+        categories={shopCategories?.data?.sort((a, b) => a?.input - b?.input)}
+        loading={isCategoriesLoading}
       />
+      
       <BannerContainer
         stories={stories || []}
         banners={banners?.data || []}
         loadingStory={isStoriesLoading}
         loadingBanner={isBannerLoading}
       />
+
+
       <StoreList
         title={t("shops")}
         shops={shops?.data || []}

@@ -51,21 +51,7 @@ export default function MobileAppDrawer({ handleClose }: Props) {
         {isAuthenticated && (
           <ProfileCard data={user} handleClose={handleClose} />
         )}
-        {isAuthenticated && (
-          <Link href={"/wallet"} className={cls.row} onClick={handleClose}>
-            <div className={cls.rowItem}>
-              <Wallet3LineIcon />
-              <span className={cls.text}>{t("wallet")}:</span>
-              <span className={cls.bold}>
-                <Price
-                  number={user.wallet?.price}
-                  symbol={user.wallet?.symbol}
-                />
-              </span>
-            </div>
-            <ArrowRightSLineIcon />
-          </Link>
-        )}
+ 
         {isAuthenticated && (
           <Link href={"/orders"} className={cls.row} onClick={handleClose}>
             <div className={cls.rowItem}>
@@ -132,20 +118,8 @@ export default function MobileAppDrawer({ handleClose }: Props) {
             <ArrowRightSLineIcon />
           </Link>
         )}
-        <Link href={"/"} className={cls.row} onClick={handleOpenLangDrawer}>
-          <div className={cls.rowItem}>
-            <GlobalLineIcon />
-            <span className={cls.text}>{t("languages")}</span>
-          </div>
-          <ArrowRightSLineIcon />
-        </Link>
-        <Link href={"/"} className={cls.row} onClick={handleOpenCurrencyDrawer}>
-          <div className={cls.rowItem}>
-            <BankCardLineIcon />
-            <span className={cls.text}>{t("currency")}</span>
-          </div>
-          <ArrowRightSLineIcon />
-        </Link>
+    
+
       </div>
       <MobileDrawer open={langDrawer} onClose={handleCloseLangDrawer}>
         <LanguagePopover onClose={handleCloseLangDrawer} />
