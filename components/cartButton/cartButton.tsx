@@ -20,7 +20,7 @@ export default function CartButton({}: Props) {
         <Link href={`/restaurant/${cart[0].shop_id}`} className={cls.cartBtn}>
           <ShoppingBag3LineIcon />
           <div className={cls.text}>
-            <span>{t("order")}</span>{" "}
+            <span>{t("pedir")}</span>{" "}
             <span className={cls.price}>
               <Price number={totalPrice} />
             </span>
